@@ -3,10 +3,7 @@
 	margin: 0;
 }
 
-#myCanvas {
-	background: #eee; 
+#gameCanvas {
 	display: block; 
-	margin: 0 auto;
-	width: 480px;
-	height: 320px;
+	border: 1px solid black;
 }
