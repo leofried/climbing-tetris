@@ -14,6 +14,8 @@ window.onload = function() {
 var canvas;
 var context;
 
+var frameID;
+
 /*Variables to do with the size of the screen. The width and height of the canvas in blocks,
 the width and height of the canvas in pixels, and the width and height of a block in pixels.*/
 var blockWidth = 10;
@@ -30,21 +32,22 @@ var pbHeight = pixelHeight / blockHeight;
 //0 is empty, 1 is player, 2 is ground, 3 is piece.
 var array = new Array(blockWidth);
 
-for(var i=0; i<blockWidth; i++){
-	array[i] = new Array(blockHeight);
-	for(var j=0; j<blockHeight; j++){
-		array[i][j] = 0;
-	}
-}
-array[0][blockHeight - 1] = 1;
-
-
-
 
 //Starts the game, sets the intervals, adds the listeners, etc.
 function startGame() {
-	setInterval(updateFrame, 1);
+	for(var i=0; i<blockWidth; i++){
+		array[i] = new Array(blockHeight);
+		for(var j=0; j<blockHeight; j++){
+			array[i][j] = 0;
+		}
+	}
+
+
 	document.addEventListener("click", mouseClick, false);
+	frameID = setInterval(updateFrame, 1);
+
+	newPlayer();
+	dropBlock();
 }
 
 
@@ -73,7 +76,7 @@ function updateFrame() {
 			if(x == 1) {
 				context.fillStyle = "blue";
 			}
-			if (x == 2 | x == 3) {
+			if (x == 2 || x == 3) {
 				context.fillStyle = "red";
 			}
 
@@ -81,4 +84,11 @@ function updateFrame() {
 		}
 	}
 
+}
+
+
+function endGame(){
+	document.removeEventListener("click", mouseClick, false);
+	clearInterval(frameID)
+	alert("Sorry, you lost.");
 }
