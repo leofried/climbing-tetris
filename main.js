@@ -35,14 +35,15 @@ var array = new Array(blockWidth);
 
 //Starts the game, sets the intervals, adds the listeners, etc.
 function startGame() {
+	endGame(false);
+
 	for(var i=0; i<blockWidth; i++){
 		array[i] = new Array(blockHeight);
 		for(var j=0; j<blockHeight; j++){
 			array[i][j] = 0;
 		}
 	}
-
-
+	
 	document.addEventListener("click", mouseClick, false);
 	frameID = setInterval(updateFrame, 1);
 
@@ -54,13 +55,23 @@ function startGame() {
 //What happens when the mouse gets clicked. The mouse getting clicked is the main source of user input.
 function mouseClick(event) {
 	var rect = canvas.getBoundingClientRect();
-	var clickX = event.clientX - rect.left;
+	var adjX = (event.clientX - rect.left) / pixelWidth;
+	var adjY = (event.clientY - rect.top) / pixelHeight;
 
-	if (clickX < pixelWidth / 3) {
-		playerLeft();
-	} else if (clickX > 2 * pixelWidth / 3) {
-		playerRight();
+	if (adjY > 1/2){
+		if(adjX < 1/2){
+			playerLeft();
+		}else{
+			playerRight();
+		}
+	}else{
+		if(adjX < 1/2){
+			blockLeft();
+		}else{
+			blockRight();
+		}
 	}
+
 }
 
 //Update the canvas frame.
@@ -84,11 +95,16 @@ function updateFrame() {
 		}
 	}
 
+	context.fillStyle = "grey";
+	context.fillRect(0, pixelHeight / 2 - 1, pixelWidth, 2);
+	context.fillRect(pixelWidth / 2 - 1, 0, 2, pixelHeight);
+
 }
 
 
-function endGame(){
+function endGame(playerLost){
 	document.removeEventListener("click", mouseClick, false);
 	clearInterval(frameID)
-	alert("Sorry, you lost.");
+	endUpdate();
+	if(playerLost) alert("Sorry, you lost.");
 }
