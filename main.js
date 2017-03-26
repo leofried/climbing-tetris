@@ -48,6 +48,7 @@ function startGame() {
 	frameID = setInterval(updateFrame, 1);
 
 	newPlayer();
+	resetPiece();
 	dropBlock();
 }
 
@@ -98,6 +99,9 @@ function updateFrame() {
 	context.fillStyle = "grey";
 	context.fillRect(0, pixelHeight / 2 - 1, pixelWidth, 2);
 	context.fillRect(pixelWidth / 2 - 1, 0, 2, pixelHeight);
+
+	context.fillStyle = "black";
+	context.fillText(pieceCounterMax - pieceCounter + 1, 20, 20);
 
 }
 
