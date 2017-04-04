@@ -9,6 +9,14 @@ var pieceId;
 
 var moving = false;
 
+var pieceCounter = 0;
+
+var pieceCounterMax = 4;
+
+function resetPiece(){
+	pieceCounter = 0;
+}
+
 function dropBlock(){
 	var pieceWidth = buildPiece();	
 
@@ -18,7 +26,15 @@ function dropBlock(){
 		pieceArray[i][0] += xAdj;
 	}
 
-	pieceId = setInterval(updateBlock, pieceSpeed);
+	var dead = false;
+
+	pieceCounter++;
+	if(pieceCounter > pieceCounterMax){
+		pieceCounter = 0;
+		dead = dropFloor();
+	}
+
+	if(!dead) pieceId = setInterval(updateBlock, pieceSpeed);
 }
 
 function blockLeft(){
